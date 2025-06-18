@@ -9,21 +9,24 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        flutter-version: [3.16.5, 3.19.6]
+        channel: [stable, beta]
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Flutter ${{ matrix.flutter-version }}
+      - name: Setup Flutter on ${{ matrix.channel }}
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: ${{ matrix.flutter-version }}
+          channel: ${{ matrix.channel }}
 
-      - name: Flutter Pub Get
+      - name: Flutter Version
+        run: flutter --version
+
+      - name: Install dependencies
         run: flutter pub get
 
-      - name: Flutter Analyze
+      - name: Analyze code
         run: flutter analyze
 
       - name: Run Tests
